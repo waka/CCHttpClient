@@ -5,8 +5,6 @@
 //
 
 #import "CCHttpClient.h"
-#import "Reachability.h"
-#import "SVProgressHUD.h"
 
 
 @interface CCHttpClient ()
@@ -203,13 +201,6 @@
       success: (SEL)successSelector
       failure: (SEL)failureSelector
 {
-    // Check network reachability
-    Reachability *hostReach = [Reachability reachabilityForInternetConnection];
-    if ([hostReach currentReachabilityStatus] == NotReachable) {
-        [SVProgressHUD showErrorWithStatus: @"Network is no available"];
-        return;
-    }
-    
     NSInvocation *successInvocation = nil;
     NSInvocation *failureInvocation = nil;
     if (target) {
@@ -246,7 +237,6 @@
                                if (error) {
                                    __block NSError *requestError = [error copy];
                                    dispatch_async(dispatch_get_main_queue(), ^{
-                                       [SVProgressHUD dismiss];
                                        [failureInvocation setArgument: &response atIndex: 2];
                                        [failureInvocation setArgument: &requestError atIndex: 3];
                                        [failureInvocation invoke];
@@ -262,7 +252,6 @@
                                if (statusCode == 200 || statusCode == 201 || statusCode == 202 || statusCode == 204 || statusCode == 304) {
                                    __block NSData *responseData = [data copy];
                                    dispatch_async(dispatch_get_main_queue(), ^{
-                                       [SVProgressHUD dismiss];
                                        [successInvocation setArgument: &response atIndex: 2];
                                        [successInvocation setArgument: &responseData atIndex: 3];
                                        [successInvocation invoke];
@@ -275,7 +264,6 @@
                                                                                         code: 1000
                                                                                     userInfo: nil];
                                    dispatch_async(dispatch_get_main_queue(), ^{
-                                       [SVProgressHUD dismiss];
                                        [failureInvocation setArgument: &response atIndex: 2];
                                        [failureInvocation setArgument: &responseError atIndex: 3];
                                        [failureInvocation invoke];
