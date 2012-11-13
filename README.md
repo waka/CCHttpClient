@@ -32,7 +32,7 @@ GET JSON request
 
 POST request
 
-    NSString *url = @"http://path/to/get"
+    NSString *url = @"http://path/to/post"
     NSDictionary *params = @{@"foo": @"bar"};
 
     CCHttpClient *client = [CCHttpClient clientWithURL: url];
@@ -44,7 +44,7 @@ POST request
 
 POST JSON request
 
-    NSString *url = @"http://path/to/get"
+    NSString *url = @"http://path/to/post"
     NSDictionary *params = @{@"foo": @"bar"};
 
     CCHttpClient *client = [CCHttpClient clientWithURL: url];
